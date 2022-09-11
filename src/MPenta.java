@@ -141,6 +141,41 @@ public class MPenta {
 
     }
 
+    public int[][] nOrderMatrix(int n){
+        int[][] matriz = new int[n][n];
+
+        for (int i = 0; i < n; i++){
+            if (i == 0){
+                matriz[i][i] = 9;
+            }else if (i == n-2){
+                matriz[i][i] = 5;
+                matriz[i+1][i] = -2;
+                matriz[i][i+1] = -2;
+            }else if (i == n-1){  //ultimo caso
+                matriz[i][i] = 1;
+                break;
+            }else{
+                matriz[i][i] = 6;
+            }
+            if((i+1) < n-1){
+                matriz[i][i+1] = -4;
+                matriz[i+1][i] = -4;
+            }if((i+2) < n){
+                matriz[i][i+2] = 1;
+                matriz[i+2][i] = 1; 
+            }
+               
+        }
+        return matriz;
+    }
+
+    public int[] nOrderVect(int n){
+        int [] vect = new int[n];
+        vect[0] = 6;
+        vect[1] = -1;
+        return vect;
+    } 
+
     public static void main(String[] args){
         MPenta A = new MPenta();
         int [][] matriz = {{1,2,1,0,0,0,0,0,0,0},       //matriz ejemplo 1
@@ -161,7 +196,10 @@ public class MPenta {
                             {0,3,-1,8}};
         int [] vectb2 = {6,25,-11,15};
 
-        A.ptrans_1(matriz2, vectb2);
+        int [][] matrizn = A.nOrderMatrix(50);
+        int [] vectn = A.nOrderVect(500);
+        A.ptrans_1(matrizn, vectn);
+
 
     }
 }
