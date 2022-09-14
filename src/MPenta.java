@@ -177,7 +177,7 @@ public class MPenta {
             x[i] = z[i] - alpha[i]*x[i+1] - beta[i]*x[i+2];
         }
 
-        printVector(x, "Solucion");
+        //printVector(x, "Solucion");
         System.out.println("\n");
         return x;
 
@@ -189,6 +189,7 @@ public class MPenta {
      * @return Matriz de orden n 
      */
     public float[][] nOrderMatrix(int n){
+        System.out.println("___________________________________________________\nMatriz de orden " + n + "\n");
         float[][] matriz = new float[n][n];
 
         for (int i = 0; i < n; i++){
@@ -251,23 +252,29 @@ public class MPenta {
         return error;
     }
 
-    public static void main(String[] args){
-        DecimalFormat df = new DecimalFormat("0.000");
+    public void pregunta3(int n){
         long startTime = System.currentTimeMillis();
-        MPenta A = new MPenta();
+        DecimalFormat df = new DecimalFormat("0.000");
 
-        //Pregunta 3
-        int n = 50;  //Orden de la matriz 
-        float [][] matrizn = A.nOrderMatrix(n);
-        float [] vectn = A.nOrderVect(n);
-        float [] solucion = A.ptrans_1(matrizn, vectn);
-        A.error(matrizn, vectn, solucion);
+        float [][] matrizn = nOrderMatrix(n);
+        float [] vectn = nOrderVect(n);
+        float [] solucion = ptrans_1(matrizn, vectn);
+        error(matrizn, vectn, solucion);
 
-        //Calculo del tiempo de ejecucion del programa 
         long endTime = System.currentTimeMillis();
         float tiempo_ms = (float) ((endTime - startTime));
         String tiempo_s = df.format(tiempo_ms/1000);
         System.out.println("\nTiempo de ejecucion: " + tiempo_s);
+
+    }
+
+    public static void main(String[] args){
+        MPenta A = new MPenta();
+
+        A.pregunta3(50);
+        A.pregunta3(500);
+        A.pregunta3(5000);
+        A.pregunta3(10000);
 
     }
 }
