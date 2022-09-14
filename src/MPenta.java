@@ -1,4 +1,11 @@
 import java.text.DecimalFormat;
+
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.linear.DecompositionSolver;
+import org.apache.commons.math3.linear.LUDecomposition;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.RealVector;
 /**
  * Clase que contiene todos los metodos requeridos para matrices pentadianales segun lo solicitado
  */
@@ -124,6 +131,7 @@ public class MPenta {
     public float[] ptrans_1(float[][] matrizA, float[] vectn){
         if(det_penta(matrizA) == 0){
             System.out.println("El sistema no tiene soluciones");
+            System.exit(0);
             float[] x = new float[0];
             return x;
         }
@@ -248,33 +256,67 @@ public class MPenta {
             error += Math.pow(sum_Ax - vectn[i], 2);
         }
         error = (float) Math.sqrt(error);
-        System.out.println("Error: " + error);
         return error;
+    }
+
+    public void executionTime(long startTime){
+        DecimalFormat df = new DecimalFormat("0.000");
+        long endTime = System.currentTimeMillis();
+        float tiempo_ms = (float) ((endTime - startTime));
+        String tiempo_s = df.format(tiempo_ms/1000);
+        System.out.println("Tiempo de ejecucion: " + tiempo_s);
     }
 
     public void pregunta3(int n){
         long startTime = System.currentTimeMillis();
-        DecimalFormat df = new DecimalFormat("0.000");
 
         float [][] matrizn = nOrderMatrix(n);
         float [] vectn = nOrderVect(n);
         float [] solucion = ptrans_1(matrizn, vectn);
-        error(matrizn, vectn, solucion);
 
-        long endTime = System.currentTimeMillis();
-        float tiempo_ms = (float) ((endTime - startTime));
-        String tiempo_s = df.format(tiempo_ms/1000);
-        System.out.println("\nTiempo de ejecucion: " + tiempo_s);
+        float error = error(matrizn, vectn, solucion);
+        System.out.println("Error: " + error);
+        executionTime(startTime);
+
+        startTime = System.currentTimeMillis();
+        solucionJava(matrizn, vectn);
+        executionTime(startTime);
+
+    }
+
+    public void solucionJava(float[][] matriz, float[] vector){
+        double [][] A = new double[matriz.length][matriz.length];
+        double [] b = new double[matriz.length];
+
+        for (int i = 0; i < matriz.length; i++){
+            for (int j = 0; j < matriz.length; j++){
+                A[i][j] = matriz[i][j];
+            }
+            b[i] = vector[i];
+        }
+
+        RealMatrix coef = new Array2DRowRealMatrix(A, false);
+        DecompositionSolver solver = new LUDecomposition(coef).getSolver();
+        RealVector constants = new ArrayRealVector(b, false);
+        RealVector solution = solver.solve(constants);
+
+        float [] x = new float[matriz.length];
+        for(int i = 0; i < matriz.length; i++){
+            x[i] = (float) solution.getEntry(i);
+        }
+        float error = error(matriz, vector, x);
+        System.out.println("\nError de Java: " + error);
 
     }
 
     public static void main(String[] args){
         MPenta A = new MPenta();
 
+        A.pregunta3(5);
         A.pregunta3(50);
         A.pregunta3(500);
         A.pregunta3(5000);
-        A.pregunta3(10000);
+
 
     }
 }
