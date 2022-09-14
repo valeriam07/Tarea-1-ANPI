@@ -2,6 +2,12 @@ import java.text.DecimalFormat;
 /**
  * Clase que contiene todos los metodos requeridos para matrices pentadianales segun lo solicitado
  */
+
+ /*
+  * Pregunta 1: Metodo det_penta (linea 67)
+  * Pregunta 2: Metodo ptrans_1 (linea 124)
+  * Pregunta 3: Main (linea 254)
+  */
 public class MPenta {
     /**
      * Metodo que se encarga de imprimir cualquier matriz para una facil visualizacion
@@ -248,11 +254,12 @@ public class MPenta {
     public static void main(String[] args){
         DecimalFormat df = new DecimalFormat("0.000");
         long startTime = System.currentTimeMillis();
-
         MPenta A = new MPenta();
 
-        float [][] matrizn = A.nOrderMatrix(50);
-        float [] vectn = A.nOrderVect(50);
+        //Pregunta 3
+        int n = 50;  //Orden de la matriz 
+        float [][] matrizn = A.nOrderMatrix(n);
+        float [] vectn = A.nOrderVect(n);
         float [] solucion = A.ptrans_1(matrizn, vectn);
         A.error(matrizn, vectn, solucion);
 
