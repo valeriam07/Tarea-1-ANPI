@@ -1,6 +1,12 @@
 import java.text.DecimalFormat;
-
+/**
+ * Clase que contiene todos los metodos requeridos para matrices pentadianales segun lo solicitado
+ */
 public class MPenta {
+    /**
+     * Metodo que se encarga de imprimir cualquier matriz para una facil visualizacion
+     * @param matriz Matriz a imprimir
+     */
     public void printMatriz(float [][] matriz){
         for (int i = 0; i < matriz.length; i++) { 
             for (int j = 0; j < matriz[i].length; j++) {
@@ -10,6 +16,11 @@ public class MPenta {
         }
     }
 
+    /**
+     * Metodo que se encarga de imprimir cualquier vector para una facil visualizacion
+     * @param vector Vector a imprimir
+     * @param name Nombre del vector 
+     */
     public void printVector(float [] vector, String name){
         System.out.println(name + ": ");
         for (int i = 0; i < vector.length; i++){
@@ -18,7 +29,12 @@ public class MPenta {
         System.out.println();
     }
 
-    public boolean isPentadiagonal(float[][] matriz){            //analiza por columnas si los valores por abajo y por encima de las diagonales son 0
+    /**
+     * Verifica si una matriz es pentadiagonal
+     * @param matriz Matriz que se desea analizar
+     * @return Verdadero si la matriz es pentadiagonal, de lo contrario Falso
+     */
+    public boolean isPentadiagonal(float[][] matriz){            
         int diagIndex = 3;      //valor a partir del cual se analiza en la respectiva columna, aumenta 1 segun avanza la busqueda
         if (matriz.length < 4){
             System.out.println("Error: La matriz no es pentadiagonal");
@@ -37,11 +53,16 @@ public class MPenta {
         return true;
     }
 
+    /**
+     * Calcula el determinante, mediante el metodo de Evans, de una matriz, siempre y cuando esta sea pentadiagonal
+     * @param matriz Matriz a la que se le desea calcular el determinante
+     * @return Determinante de la matriz
+     */
     public float det_penta(float [][] matriz){
-        if (matriz.length != matriz[0].length){ //Comprobar que la matriz es cuadrada
+        if (matriz.length != matriz[0].length){ 
             System.out.println("Error: La matriz no es cuadrada");
         }
-        else if (isPentadiagonal(matriz) == true){      //Si es pentadiagonal hace el metodo de Evans
+        else if (isPentadiagonal(matriz) == true){      
             float[] P = new float[matriz.length];  
             float[] R = new float[matriz.length];
             float[] S = new float[matriz.length];
@@ -68,6 +89,13 @@ public class MPenta {
         return 0;
     }
 
+    /**
+     * Obtiene una diagonal cualquiera en una matriz a partir de una posicion dada
+     * @param matrizA Matriz donde se encuentra la diagonal buscada
+     * @param i Posicion segun filas
+     * @param j Posicion segun columnas
+     * @return Vector que contiene los valores de la diagonal
+     */
     public float[] getDiagonal(float[][] matrizA, int i, int j){
         float [] diagonal = new float[matrizA.length];
 
@@ -81,6 +109,12 @@ public class MPenta {
         return diagonal;
     }
 
+    /**
+     * Metodo para solucionar un sistema de ecuaciones con una matriz pentadiagonal
+     * @param matrizA Matriz pentadiagonal con los coeficientes asignados a cada variable
+     * @param vectn Vector con las constantes a las cuales se iguala el sistema
+     * @return Vector que contiene la solucion para cada variable del sistema
+     */
     public float[] ptrans_1(float[][] matrizA, float[] vectn){
         if(det_penta(matrizA) == 0){
             System.out.println("El sistema no tiene soluciones");
@@ -143,6 +177,11 @@ public class MPenta {
 
     }
 
+    /**
+     * Genera una matriz de orden n segun los valores propuestos
+     * @param n Orden de la matriz
+     * @return Matriz de orden n 
+     */
     public float[][] nOrderMatrix(int n){
         float[][] matriz = new float[n][n];
 
@@ -153,7 +192,7 @@ public class MPenta {
                 matriz[i][i] = 5;
                 matriz[i+1][i] = -2;
                 matriz[i][i+1] = -2;
-            }else if (i == n-1){  //ultimo caso
+            }else if (i == n-1){  
                 matriz[i][i] = 1;
                 break;
             }else{
@@ -171,6 +210,11 @@ public class MPenta {
         return matriz;
     }
 
+    /**
+     * Genera un vector de orden n segun los valores propuestos
+     * @param n Orden del vector
+     * @return Vector de orden n 
+     */
     public float[] nOrderVect(int n){
         float [] vect = new float[n];
         vect[0] = 6;
@@ -178,6 +222,13 @@ public class MPenta {
         return vect;
     } 
 
+    /**
+     * Calcula el error existente en la solucion de un sistema de ecuaciones pentadiagonal
+     * @param A Matriz de coeficientes
+     * @param vectn Vector de las constantes a las cuales se iguala el sistema
+     * @param x Vector solucion del sistema
+     * @return Valor del error en la solucion 
+     */
     public float error(float [][] A, float[] vectn, float [] x){
         int n = A.length;
         float error = 0;
@@ -199,30 +250,13 @@ public class MPenta {
         long startTime = System.currentTimeMillis();
 
         MPenta A = new MPenta();
-        int [][] matriz = {{1,2,1,0,0,0,0,0,0,0},       //matriz ejemplo 1
-                           {3,2,2,5,0,0,0,0,0,0},
-                           {1,2,3,1,-2,0,0,0,0,0},
-                           {0,3,1,-4,5,1,0,0,0,0},
-                           {0,0,1,2,5,-7,5,0,0,0},
-                           {0,0,0,5,1,6,3,2,0,0},
-                           {0,0,0,0,2,2,7,-1,4,0},
-                           {0,0,0,0,0,2,1,-1,4,-3},
-                           {0,0,0,0,0,0,2,-2,1,5},
-                           {0,0,0,0,0,0,0,-1,4,8}};
-        int [] vectb = {8,33,8,24,29,82,71,17,57,108};
 
-        float [][] matriz2 = {{10,-1,2,0},        //matriz ejemplo 2
-                            {-1,11,-1,3},
-                            {2,-1,10,-1},
-                            {0,3,-1,8}};
-        int [] vectb2 = {6,25,-11,15};
-
-        float [][] matrizn = A.nOrderMatrix(5000);
-        float [] vectn = A.nOrderVect(5000);
+        float [][] matrizn = A.nOrderMatrix(50);
+        float [] vectn = A.nOrderVect(50);
         float [] solucion = A.ptrans_1(matrizn, vectn);
         A.error(matrizn, vectn, solucion);
 
-
+        //Calculo del tiempo de ejecucion del programa 
         long endTime = System.currentTimeMillis();
         float tiempo_ms = (float) ((endTime - startTime));
         String tiempo_s = df.format(tiempo_ms/1000);
