@@ -95,6 +95,9 @@ public class MPenta {
                 P[i] = matriz[i][i]*P[i-1] - matriz[i][i-1]*matriz[i-1][i]*P[i-2] - matriz[i][i-2]*matriz[i-2][i]*(
                     matriz[i-1][i-1]*P[i-3] - matriz[i-1][i-3]*matriz[i-3][i-1]*P[i-4]) + matriz[i][i-2]*matriz[i-1][i]*R[i-1] + matriz[i][i-1]*matriz[i-2][i]*S[i-1]; 
             }
+            if(Double.isNaN(P[matriz.length-1]) == true){   
+                System.out.println("El determinante de la matriz tiende a infinito");
+            }
             System.out.println("det(matriz) = " + P[matriz.length-1]);
             float det = P[matriz.length-1];
             return det;
@@ -267,6 +270,11 @@ public class MPenta {
         System.out.println("Tiempo de ejecucion: " + tiempo_s);
     }
 
+    /**
+     * Resuelve un sistema de ecuaciones pentadiagonal de orden n mediante el metodo implementado y el metodo de la 
+     * libreria Commons Math para posteriormente comparar el error y el tiempo de ejecucion de cada metodo
+     * @param n Orden del sistema para el cual se desea realizar el procedimiento
+     */
     public void pregunta3(int n){
         long startTime = System.currentTimeMillis();
 
@@ -284,6 +292,11 @@ public class MPenta {
 
     }
 
+    /**
+     * Genera la solucion de un sistema de ecuaciones con matrices por medio de los metodos de la libreria Commons Math de Java
+     * @param matriz Matriz de coeficientes
+     * @param vector Vector de constantes
+     */
     public void solucionJava(float[][] matriz, float[] vector){
         double [][] A = new double[matriz.length][matriz.length];
         double [] b = new double[matriz.length];
