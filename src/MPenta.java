@@ -1,6 +1,7 @@
+import java.text.DecimalFormat;
 
 public class MPenta {
-    public void printMatriz(int [][] matriz){
+    public void printMatriz(float [][] matriz){
         for (int i = 0; i < matriz.length; i++) { 
             for (int j = 0; j < matriz[i].length; j++) {
                 System.out.print(matriz[i][j] + " ");
@@ -17,7 +18,7 @@ public class MPenta {
         System.out.println();
     }
 
-    public boolean isPentadiagonal(int [][] matriz){            //analiza por columnas si los valores por abajo y por encima de las diagonales son 0
+    public boolean isPentadiagonal(float[][] matriz){            //analiza por columnas si los valores por abajo y por encima de las diagonales son 0
         int diagIndex = 3;      //valor a partir del cual se analiza en la respectiva columna, aumenta 1 segun avanza la busqueda
         if (matriz.length < 4){
             System.out.println("Error: La matriz no es pentadiagonal");
@@ -36,14 +37,14 @@ public class MPenta {
         return true;
     }
 
-    public int det_penta(int [][] matriz){
+    public float det_penta(float [][] matriz){
         if (matriz.length != matriz[0].length){ //Comprobar que la matriz es cuadrada
             System.out.println("Error: La matriz no es cuadrada");
         }
         else if (isPentadiagonal(matriz) == true){      //Si es pentadiagonal hace el metodo de Evans
-            int[] P = new int[matriz.length];  
-            int[] R = new int[matriz.length];
-            int[] S = new int[matriz.length];
+            float[] P = new float[matriz.length];  
+            float[] R = new float[matriz.length];
+            float[] S = new float[matriz.length];
 
             P[0] = matriz[0][0];
             R[1] = matriz[0][1];
@@ -61,26 +62,26 @@ public class MPenta {
                     matriz[i-1][i-1]*P[i-3] - matriz[i-1][i-3]*matriz[i-3][i-1]*P[i-4]) + matriz[i][i-2]*matriz[i-1][i]*R[i-1] + matriz[i][i-1]*matriz[i-2][i]*S[i-1]; 
             }
             System.out.println("det(matriz) = " + P[matriz.length-1]);
-            int det = P[matriz.length-1];
+            float det = P[matriz.length-1];
             return det;
         }
         return 0;
     }
 
-    public float[] getDiagonal(int [][] matriz, int i, int j){
-        float [] diagonal = new float[matriz.length];
+    public float[] getDiagonal(float[][] matrizA, int i, int j){
+        float [] diagonal = new float[matrizA.length];
 
-        for (int fila = i; fila < matriz.length; fila++){
-            if(j == matriz.length){
+        for (int fila = i; fila < matrizA.length; fila++){
+            if(j == matrizA.length){
                 break;
             }
-            diagonal[fila] = matriz[fila][j];
+            diagonal[fila] = matrizA[fila][j];
             j++;
         }
         return diagonal;
     }
 
-    public float[] ptrans_1(int [][] matrizA, int [] vectb){
+    public float[] ptrans_1(float[][] matrizA, float[] vectn){
         if(det_penta(matrizA) == 0){
             System.out.println("El sistema no tiene soluciones");
             float[] x = new float[0];
@@ -103,20 +104,20 @@ public class MPenta {
         mu[0] = d[0];
         alpha[0] = a[0]/mu[0];
         beta[0] = b[0]/mu[0];
-        z[0] = vectb[0]/mu[0];
+        z[0] = vectn[0]/mu[0];
 
         gamma[1] = c[1];
         mu[1] = d[1] - alpha[0]*gamma[1];
         alpha[1] = (a[1]-beta[0]*gamma[1])/mu[1];
         beta[1] = b[1]/mu[1];
-        z[1] = (vectb[1] - z[0]*gamma[1])/mu[1];
+        z[1] = (vectn[1] - z[0]*gamma[1])/mu[1];
 
         for (int i = 2; i <= n-2; i++){
             gamma[i] = c[i] - alpha[i-2]*e[i];
             mu[i] = d[i] - beta[i-2]*e[i] - alpha[i-1]*gamma[i];
             alpha[i] = (a[i]-beta[i-1]*gamma[i])/mu[i];
             beta[i] = b[i]/mu[i];
-            z[i] = (vectb[i] - z[i-2]*e[i] - z[i-1]*gamma[i])/mu[i];
+            z[i] = (vectn[i] - z[i-2]*e[i] - z[i-1]*gamma[i])/mu[i];
 
         }
 
@@ -125,8 +126,8 @@ public class MPenta {
         alpha[n-1] = (a[n-1] - beta[n-2]*gamma[n-1])/mu[n-1];
         gamma[n] = c[n] - alpha[n-2]*e[n];
         mu[n] = d[n] - beta[n-2]*e[n] - alpha[n-1]*gamma[n];
-        z[n-1] = (vectb[n-1] - z[n-3]*e[n-1] - z[n-2]*gamma[n-1])/mu[n-1];
-        z[n] = (vectb[n] - z[n-2]*e[n] - z[n-1]*gamma[n])/mu[n];
+        z[n-1] = (vectn[n-1] - z[n-3]*e[n-1] - z[n-2]*gamma[n-1])/mu[n-1];
+        z[n] = (vectn[n] - z[n-2]*e[n] - z[n-1]*gamma[n])/mu[n];
         
         float[] x = new float[n+1];
         x[n] = z[n];
@@ -136,13 +137,14 @@ public class MPenta {
             x[i] = z[i] - alpha[i]*x[i+1] - beta[i]*x[i+2];
         }
 
-        printVector(x, "Solucion: ");
+        printVector(x, "Solucion");
+        System.out.println("\n");
         return x;
 
     }
 
-    public int[][] nOrderMatrix(int n){
-        int[][] matriz = new int[n][n];
+    public float[][] nOrderMatrix(int n){
+        float[][] matriz = new float[n][n];
 
         for (int i = 0; i < n; i++){
             if (i == 0){
@@ -169,14 +171,33 @@ public class MPenta {
         return matriz;
     }
 
-    public int[] nOrderVect(int n){
-        int [] vect = new int[n];
+    public float[] nOrderVect(int n){
+        float [] vect = new float[n];
         vect[0] = 6;
         vect[1] = -1;
         return vect;
     } 
 
+    public float error(float [][] A, float[] vectn, float [] x){
+        int n = A.length;
+        float error = 0;
+
+        for (int i = 0; i < n; i++){
+            float sum_Ax = 0;
+            for (int j = 0; j < n; j++){
+                sum_Ax += A[i][j]*x[j];
+            }
+            error += Math.pow(sum_Ax - vectn[i], 2);
+        }
+        error = (float) Math.sqrt(error);
+        System.out.println("Error: " + error);
+        return error;
+    }
+
     public static void main(String[] args){
+        DecimalFormat df = new DecimalFormat("0.000");
+        long startTime = System.currentTimeMillis();
+
         MPenta A = new MPenta();
         int [][] matriz = {{1,2,1,0,0,0,0,0,0,0},       //matriz ejemplo 1
                            {3,2,2,5,0,0,0,0,0,0},
@@ -190,16 +211,22 @@ public class MPenta {
                            {0,0,0,0,0,0,0,-1,4,8}};
         int [] vectb = {8,33,8,24,29,82,71,17,57,108};
 
-        int [][] matriz2 = {{10,-1,2,0},        //matriz ejemplo 2
+        float [][] matriz2 = {{10,-1,2,0},        //matriz ejemplo 2
                             {-1,11,-1,3},
                             {2,-1,10,-1},
                             {0,3,-1,8}};
         int [] vectb2 = {6,25,-11,15};
 
-        int [][] matrizn = A.nOrderMatrix(50);
-        int [] vectn = A.nOrderVect(500);
-        A.ptrans_1(matrizn, vectn);
+        float [][] matrizn = A.nOrderMatrix(5000);
+        float [] vectn = A.nOrderVect(5000);
+        float [] solucion = A.ptrans_1(matrizn, vectn);
+        A.error(matrizn, vectn, solucion);
 
+
+        long endTime = System.currentTimeMillis();
+        float tiempo_ms = (float) ((endTime - startTime));
+        String tiempo_s = df.format(tiempo_ms/1000);
+        System.out.println("\nTiempo de ejecucion: " + tiempo_s);
 
     }
 }
