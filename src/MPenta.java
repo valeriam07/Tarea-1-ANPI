@@ -11,9 +11,9 @@ import org.apache.commons.math3.linear.RealVector;
  */
 
  /*
-  * Pregunta 1: Metodo det_penta (linea 67)
-  * Pregunta 2: Metodo ptrans_1 (linea 124)
-  * Pregunta 3: Main (linea 254)
+  * Pregunta 1: Metodo det_penta (linea 74)
+  * Pregunta 2: Metodo ptrans_1 (linea 134)
+  * Pregunta 3: Metodo pregunta3 (linea 278)
   */
 public class MPenta {
     /**
@@ -262,12 +262,12 @@ public class MPenta {
         return error;
     }
 
-    public void executionTime(long startTime){
+    public String executionTime(long startTime){
         DecimalFormat df = new DecimalFormat("0.000");
         long endTime = System.currentTimeMillis();
         float tiempo_ms = (float) ((endTime - startTime));
         String tiempo_s = df.format(tiempo_ms/1000);
-        System.out.println("Tiempo de ejecucion: " + tiempo_s);
+        return tiempo_s;
     }
 
     /**
@@ -281,14 +281,17 @@ public class MPenta {
         float [][] matrizn = nOrderMatrix(n);
         float [] vectn = nOrderVect(n);
         float [] solucion = ptrans_1(matrizn, vectn);
+        String time;
 
         float error = error(matrizn, vectn, solucion);
-        System.out.println("Error: " + error);
-        executionTime(startTime);
+        System.out.println("Error (algoritmos implementados): " + error);
+        time = executionTime(startTime);
+        System.out.println("Tiempo de ejecucion (algoritmos implementados): " + time);
 
         startTime = System.currentTimeMillis();
         solucionJava(matrizn, vectn);
-        executionTime(startTime);
+        time = executionTime(startTime);
+        System.out.println("Tiempo de ejecucion (libreria de Java) " + time);
 
     }
 
@@ -318,7 +321,7 @@ public class MPenta {
             x[i] = (float) solution.getEntry(i);
         }
         float error = error(matriz, vector, x);
-        System.out.println("\nError de Java: " + error);
+        System.out.println("\nError (libreria de Java): " + error);
 
     }
 
